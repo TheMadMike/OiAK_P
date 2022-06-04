@@ -16,16 +16,13 @@ FP16::FP16(uint16_t value)
 :value(value){
 }
 
-FP16::FP16(float x) {
-    fp32 fp;
-    fp.v = x;
-    sign = fp.s;
-    mantissa = (uint16_t)((fp.m & 0b11111111110000000000000) >> 13);
-    exponent = (uint16_t) (fp.e >> 3);
+FP16::FP16(float f) {
+    uint32_t x = *((uint32_t*)&f);
+    value = ((x>>16)&0x8000)|((((x&0x7f800000)-0x38000000)>>13)&0x7c00)|((x>>13)&0x03ff);
 }
 
-FP16::operator float() {
-    float f = powf(2.0f, (float)(exponent - 15)) * (1.0f + ((float)mantissa / 1024.0f));
-    f *= sign ? -1 : 1;
-    return f;
+float FP16::toFloat() {
+    float x = powf(2.0f, (float)(exponent - 15))*(1.0f + (((float)mantissa) / ((float)(1 << 9))));
+    x *= sign ? -1.0f : 1.0f;
+    return x;
 }

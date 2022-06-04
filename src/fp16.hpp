@@ -10,9 +10,9 @@ class FP16 {
 
 public:
     FP16(uint16_t value= 0);
-    FP16(float x);
+    FP16(float f);
 
-    explicit operator float();
+    float toFloat();
 
     union {
         uint16_t value;
