@@ -1,8 +1,8 @@
 CC=g++
-CFLAGS= -std=c++17 -Wall
+CFLAGS= -std=c++17 -Wall -g
 SOURCES= src/*.cpp
 TARGET= oiak
 
 all:
-	$(CC) $(CLFAGS) $(SOURCES) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET)
 
