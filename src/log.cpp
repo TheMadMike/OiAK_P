@@ -1,4 +1,5 @@
 #include "log.hpp"
+#include <stdexcept>
 #include <cmath>
 
 uint16_t shift(uint16_t x, int a) {
@@ -14,35 +15,33 @@ uint16_t shift(uint16_t x, int a) {
     return x;
 }
 
-Coefficients lookup(uint16_t x, const Coefficients* lookupTable) {
-    Coefficients coefficients;
+const Coefficients lookup(uint16_t x, const Coefficients* lookupTable) {
     for(uint8_t i = 0; i < 8; ++i) {
         if(x < logCoefficients[i].upperLimit) {
-            coefficients = lookupTable[i];
-            break;
+            return lookupTable[i];
         }
     }
 
-    return coefficients;
+    throw std::out_of_range("x is out of lookupTable range");
 }
 
 
 uint16_t approximateLog2(uint16_t x) {
     uint16_t shiftedX = x << 3;
-    Coefficients coefficients = lookup(x, logCoefficients);
+    Coefficients coefficients = lookup(x & 0x3F0, logCoefficients);
     shiftedX += coefficients.b;
-    shiftedX += shift(x, coefficients.a1);
-    shiftedX += shift(x, coefficients.a2);
+    shiftedX += shift(shiftedX, coefficients.a1);
+    shiftedX += shift(shiftedX, coefficients.a2);
 
-    return shiftedX >> 3;
+    return (shiftedX >> 3);
 }
 
 uint16_t approximateAntilog2(uint16_t  x) {
     uint16_t shiftedX = x << 3;
-    Coefficients coefficients = lookup(x, antiLogCoefficients);
+    Coefficients coefficients = lookup(x & 0x3F0, antiLogCoefficients);
     shiftedX += coefficients.b;
-    shiftedX += shift(x, coefficients.a1);
-    shiftedX += shift(x, coefficients.a2);
+    shiftedX += shift(shiftedX, coefficients.a1);
+    shiftedX += shift(shiftedX, coefficients.a2);
 
-    return shiftedX >> 3;
+    return (shiftedX >> 3);
 }

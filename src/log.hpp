@@ -1,7 +1,7 @@
 #ifndef LOG_HPP
 #define LOG_HPP
 
-#include "fp16.hpp"
+#include <inttypes.h>
 
 /**
  * @brief Implements functionality of the fused converter
@@ -18,7 +18,7 @@ struct Coefficients {
     uint16_t b;
 };
 
-Coefficients lookup(uint16_t x, const Coefficients* lookupTable);
+const Coefficients lookup(uint16_t x, const Coefficients* lookupTable);
 
 const Coefficients logCoefficients[] = {
     {95, 1, -3, 13},
