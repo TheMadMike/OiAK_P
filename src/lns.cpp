@@ -16,6 +16,7 @@ float LDIV(FP16 a, FP16 b) {
     }
 
     result = powf(2.0f, (float)(a.exponent - b.exponent))*m;
+    result *= (a.sign ^ b.sign) ? -1.0f : 1.0f;
 
     return result;
 }
@@ -29,6 +30,7 @@ float LMUL(FP16 a, FP16 b) {
     m = approximateAntilog2((k1 + k2) & 1023) / 1024.0f;
 
     result = powf(2.0f, (float)(a.exponent + b.exponent - 30))*m - 0.5f;
+    result *= (a.sign ^ b.sign) ? -1.0f : 1.0f;
 
     return result;
 }
