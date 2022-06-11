@@ -10,9 +10,9 @@ float LDIV(FP16 a, FP16 b) {
     float m;
 
     if(k2 > k1) {
-        m = (1.0f / (approximateAntilog2(k2 - k1) / 1024.0f)); 
+        m = 1.0f + (1.0f / (approximateAntilog2(k2 - k1) / 1024.0f)); 
     } else {
-        m = approximateAntilog2(k1 - k2) / 1024.0f;
+        m = 1.0f + approximateAntilog2(k1 - k2) / 1024.0f;
     }
 
     result = powf(2.0f, (float)(a.exponent - b.exponent))*m;

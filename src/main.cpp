@@ -1,4 +1,5 @@
 #include "lns.hpp"
+#include "fp16.hpp"
 #include <iostream>
 #include <cmath>
 
