@@ -10,7 +10,7 @@ uint16_t shift(uint16_t x, int a) {
 
     x = x >> abs(a);
 
-    if(a < 0) {
+    if((a < 0) && (x != 0)) {
         x = ~x;
     }
 

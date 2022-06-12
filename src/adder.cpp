@@ -16,11 +16,10 @@ uint16_t adderTree(X13 a, X13 b, X13 c, X13 d) {
     // CPA
     CPA13Result cpaResult = cpa13(csa2Result.carry, csa2Result.sum);
     
-    //append the sum of carry bits to the result
+    //convert result to uint16_t
     uint16_t result = x13ToInt(cpaResult.sum);
-    Result overflowResult = FA(cpaResult.cout, csa1Result.carry.bits[12], csa2Result.carry.bits[12]);
 
-    return result | (overflowResult.s << 13) | (overflowResult.c << 14);
+    return result; //| (overflowResult.s << 13) | (overflowResult.c << 14);
 }
 
 CSA13Result csa13(X13 a, X13 b, X13 c) {
