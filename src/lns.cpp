@@ -33,18 +33,17 @@ float LSR(FP16 a) {
     float result;
     uint16_t k1 = approximateLog2(a.mantissa);
 
-    float m = approximateAntilog2(k1) / 1024.0f + 1.0f;
-    
+    float m = (approximateAntilog2(k1 / 2) / 1024.0f) + 1.0f;
+
+    if(m > 1.9f) {
+        m -= 1.0f;
+    }
+
     result = powf(2.0f, 0.5f*(a.exponent) - 7.5f)*m;
 
     return result;
 }
 
 float LISR(FP16 a) {
-    float result;
-    uint16_t k1 = approximateLog2(a.mantissa);
-
-    result = powf(2.0f, -0.5f*(a.exponent + k1/1024.0f) + 7.5f);
-
-    return result;
+    return LDIV(FP16(1.0f), LSR(a));
 }
