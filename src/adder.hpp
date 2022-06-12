@@ -17,15 +17,20 @@ struct X13 {
 Result fullAdder(bit_t x, bit_t y, bit_t cin);
 Result halfAdder(bit_t x, bit_t y);
 
-X13 adderTree(X13 a, X13 b, X13 c, X13 d);
+uint16_t adderTree(X13 a, X13 b, X13 c, X13 d);
 
 struct CSA13Result {
     X13 sum;
     X13 carry;
 };
 
+struct CPA13Result {
+    X13 sum;
+    bit_t cout;
+};
+
 CSA13Result csa13(X13 a, X13 b, X13 c);
-X13 cpa13(X13 a, X13 b);
+CPA13Result cpa13(X13 a, X13 b);
 
 #define FA(x, y, cin) fullAdder(x, y, cin)
 #define HA(x, y) halfAdder(x, y)

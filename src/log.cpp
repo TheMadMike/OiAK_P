@@ -32,12 +32,12 @@ const Coefficients lookup(uint16_t x, const Coefficients* lookupTable, IndexEnco
 uint16_t approximateLog2(uint16_t x) {
     uint16_t shiftedX = x << 3;
     Coefficients coefficients = lookup((x & 0x3F0) >> 4, logCoefficients, logIndexEncoder);
-    shiftedX = x13ToInt(adderTree(
+    shiftedX = adderTree(
         intToX13(shiftedX), 
         intToX13(coefficients.b),
         intToX13(shift(shiftedX, coefficients.a1)),
         intToX13(shift(shiftedX, coefficients.a2))
-    ));
+    );
 
     return (shiftedX >> 3);
 }
@@ -45,12 +45,12 @@ uint16_t approximateLog2(uint16_t x) {
 uint16_t approximateAntilog2(uint16_t  x) {
     uint16_t shiftedX = x << 3;
     Coefficients coefficients = lookup((x & 0x3F0) >> 4, antiLogCoefficients, antilogIndexEncoder);
-    shiftedX = x13ToInt(adderTree(
+    shiftedX = adderTree(
         intToX13(shiftedX), 
         intToX13(coefficients.b),
         intToX13(shift(shiftedX, coefficients.a1)),
         intToX13(shift(shiftedX, coefficients.a2))
-    ));
+    );
 
     return (shiftedX >> 3);
 }

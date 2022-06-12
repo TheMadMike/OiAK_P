@@ -8,10 +8,19 @@ Result halfAdder(bit_t x, bit_t y) {
     return { x ^ y, x & y };
 }
 
-X13 adderTree(X13 a, X13 b, X13 c, X13 d) {
+uint16_t adderTree(X13 a, X13 b, X13 c, X13 d) {
+    // CSA_1
     CSA13Result csa1Result = csa13(b, c, d);
+    // CSA_2
     CSA13Result csa2Result = csa13(csa1Result.carry, csa1Result.sum, a);
-    return cpa13(csa2Result.carry, csa2Result.sum);
+    // CPA
+    CPA13Result cpaResult = cpa13(csa2Result.carry, csa2Result.sum);
+    
+    //append the sum of carry bits to the result
+    uint16_t result = x13ToInt(cpaResult.sum);
+    Result overflowResult = FA(cpaResult.cout, csa1Result.carry.bits[12], csa2Result.carry.bits[12]);
+
+    return result | (overflowResult.s << 13) | (overflowResult.c << 14);
 }
 
 CSA13Result csa13(X13 a, X13 b, X13 c) {
@@ -29,7 +38,7 @@ CSA13Result csa13(X13 a, X13 b, X13 c) {
     return r;
 }
 
-X13 cpa13(X13 a, X13 b) {
+CPA13Result cpa13(X13 a, X13 b) {
     bit_t carry = 0;
     X13 sum;
 
@@ -39,7 +48,7 @@ X13 cpa13(X13 a, X13 b) {
         carry = result.c;
     }
 
-    return sum;
+    return { sum, carry };
 }
 
 uint16_t x13ToInt(X13 x) {
